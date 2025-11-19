@@ -8,7 +8,7 @@ metadata:
     app: www
   name: www
 spec:
-  replicas: 10
+  replicas: 2
   selector:
     matchLabels:
       app: www
@@ -62,9 +62,26 @@ spec:
         envFrom:
           - configMapRef:
               name: www
+        volumeMounts:
+          - name: partage
+            mountPath: /usr/share/nginx/html
+            subPath: html
+          - name: nginx-conf
+            mountPath: /etc/nginx/conf.d/
 
         resources: {}
       - image: php:8.4-fpm
         name: php
-        resources: {}
-status: {}
+        volumeMounts:
+          - name: partage
+            mountPath: /var/www/html
+            subPath: html
+
+      volumes:
+        - name: partage
+          nfs:
+            server: 192.168.56.200
+            path: "/"
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
