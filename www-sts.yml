@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: null
+  labels:
+    app: www
+  name: www
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: www
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: www
+    spec:
+      containers:
+      - image: nginx:1.29
+        name: nginx
+        resources: {}
+      - image: php:8.2-fpm
+        name: php
+        resources: {}
+status: {}

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: busy
+  name: busy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busy
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: busy
+    spec:
+      containers:
+      - command:
+        - tail
+        - -f
+        - /dev/null
+        image: busybox:1.28
+        name: busybox
+        volumeMounts:
+          - name: documents
+            mountPath: /partage
+
+      volumes:
+        - name: documents
+          hostPath:
+            path: /home/stagiaire/data
+            type: Directory

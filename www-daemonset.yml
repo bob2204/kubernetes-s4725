@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  creationTimestamp: null
+  labels:
+    app: wds
+  name: wds
+spec:
+  selector:
+    matchLabels:
+      app: wds
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: wds
+    spec:
+      containers:
+      - image: nginx:1.29
+        name: nginx

@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  annotations:
+    kubernetes.io/change-cause: php-8.4
+  labels:
+    app: www
+  name: www
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: www
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1  
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: www
+    spec:
+      containers:
+      - image: nginx:1.29
+        name: nginx
+        readinessProbe:
+          httpGet:
+            path: /index.html
+            port: 80
+          periodSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /index.html
+            port: 80
+          periodSeconds: 10
+          failureThreshold: 2
+        env:
+          - name: STAGE
+            value: Kubernetes
+          - name: NODEIP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: NODENAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: DAYS
+            valueFrom:
+              configMapKeyRef:
+                name: www
+                key: JOURS
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: www
+                key: PASSWORD
+        envFrom:
+          - configMapRef:
+              name: www
+
+        resources: {}
+      - image: php:8.4-fpm
+        name: php
+        resources: {}
+status: {}
