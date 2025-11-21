@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: quota-1
+spec:
+  hard:
+    limits.cpu: {{ .Values.quotas.cpu }}
+    pods: "{{ .Values.quotas.pods }}"

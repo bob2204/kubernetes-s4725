@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hello
+  name: hello
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+    spec:
+      containers:
+      - image: bob2606/hello-http:{{ .Values.image.tag }}
+        name: hello-http
+        env:
+          - name: PORT
+            value: "{{ .Values.deployment.env.port }}"
+          - name: MSG
+            value: {{ .Values.deployment.env.message }}
+        ports:
+          - containerPort: {{ .Values.deployment.env.port }}
+            name: {{ .Values.deployment.env.portName }}

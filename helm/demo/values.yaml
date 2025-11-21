@@ -1,0 +1,16 @@
+deployment:
+  replicas: 2
+  env:
+    port: 80
+    portName: http-hello
+    message: Déployé avec Helm
+
+quotas:
+  pods: 10
+  cpu: 400m
+
+image:
+  tag: 0.8.33
+
+limitrange:
+  cpu: 50m

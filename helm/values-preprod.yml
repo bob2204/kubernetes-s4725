@@ -1,0 +1,4 @@
+deployment:
+  replicas: 3
+image:
+  tag: 0.8.34
